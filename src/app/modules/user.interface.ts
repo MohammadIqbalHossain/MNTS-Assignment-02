@@ -1,5 +1,11 @@
 import { Model } from 'mongoose';
 
+export type TOrder = {
+  product: string;
+  price: number;
+  quantity: number;
+};
+
 export type TUser = {
   userId: number;
   userName: string;
@@ -17,6 +23,7 @@ export type TUser = {
     city: string;
     country: string;
   };
+  orders: TOrder;
 };
 
 export type UserModel = {

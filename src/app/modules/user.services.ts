@@ -1,4 +1,4 @@
-import { TUser } from './user.interface';
+import { TOrder, TUser } from './user.interface';
 import { user } from './user.model';
 
 //Create a user.
@@ -38,9 +38,42 @@ const updateUserinDB = async (userId: string, updatedUserData: TUser) => {
   return result;
 };
 
+//Delete a user document.
+const deleteUserFromDB = async (userId: string) => {
+  if (await user.isUserExists(userId)) {
+    const result = await user.deleteOne({ userId });
+    return result;
+  }
+};
+
+//Add orders or append product to it.
+const addOrderInDB = async (userId: string, order: TOrder) => {
+  const result = await user.findOneAndUpdate(
+    { userId: userId },
+    { $addToSet: { orders: order } },
+    { upsert: true, new: true },
+  );
+  return result;
+};
+
+//Retrieve all orders.
+const getAllOrdersFromDB = async (userId: string) => {
+  if (await user.isUserExists(userId)) {
+    const result = await user.aggregate([]).project({
+      orders: 1,
+    });
+    return result;
+  } else {
+    throw new Error('User not found.');
+  }
+};
+
 export const userServices = {
   createUserInDB,
   retriveAllUsersFromDB,
   getSigleUserFromDB,
   updateUserinDB,
+  deleteUserFromDB,
+  addOrderInDB,
+  getAllOrdersFromDB,
 };

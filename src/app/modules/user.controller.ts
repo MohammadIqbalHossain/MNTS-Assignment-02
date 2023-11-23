@@ -100,9 +100,86 @@ const updateSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+//Delete a user.
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userServices.deleteUserFromDB(userId);
+
+    res.status(200).json({
+      sucess: true,
+      message: 'User deleted successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'User not found!',
+      error: {
+        code: 404,
+        description: 'User not Found!',
+      },
+    });
+  }
+};
+
+//Add order or create order array.
+const addOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const newOrder = req.body;
+    const result = await userServices.addOrderInDB(userId, newOrder);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'User not found!',
+      error: {
+        code: 404,
+        description: 'User not Found!',
+      },
+    });
+  }
+};
+
+//Retrieve all orders.
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userServices.getAllOrdersFromDB(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Orders fetched successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'User not found!',
+      error: {
+        code: 404,
+        description: 'User not Found!',
+      },
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
   retrieveAllUsers,
   getSingleUser,
   updateSingleUser,
+  deleteUser,
+  addOrder,
+  getAllOrders,
 };

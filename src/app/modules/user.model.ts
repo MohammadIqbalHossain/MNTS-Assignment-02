@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../config';
-import { TUser, UserModel } from './user.interface';
+import { TOrder, TUser, UserModel } from './user.interface';
 
 export const fullNameSchema = new Schema<TUser['fullName']>({
   firstName: {
@@ -25,6 +25,21 @@ export const AddressSchema = new Schema<TUser['address']>({
   },
   country: {
     type: String,
+  },
+});
+
+export const ordersSchema = new Schema<TOrder>({
+  product: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    default: 1,
   },
 });
 
@@ -67,6 +82,9 @@ export const userSchema = new Schema<TUser, UserModel>({
   address: {
     type: AddressSchema,
     required: [true, 'Address is requried'],
+  },
+  orders: {
+    type: ordersSchema,
   },
 });
 

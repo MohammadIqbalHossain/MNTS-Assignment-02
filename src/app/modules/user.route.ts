@@ -11,4 +11,10 @@ routes.get('/users/:userId', userControllers.getSingleUser);
 
 routes.put('/users/:userId', userControllers.updateSingleUser);
 
+routes.delete('/users/:userId', userControllers.deleteUser);
+
+routes.put('/users/:userId/orders', userControllers.addOrder);
+
+routes.get('/users/:userId/orders', userControllers.getAllOrders);
+
 export const userRoutes = routes;
