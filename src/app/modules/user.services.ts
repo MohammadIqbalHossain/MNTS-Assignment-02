@@ -19,7 +19,14 @@ const retriveAllUsersFromDB = async () => {
   return result;
 };
 
+//Retrive a specific user.
+const getSigleUserFromDB = async (userId: string) => {
+  const result = await user.findOne({ userId });
+  return result;
+};
+
 export const userServices = {
   createUserInDB,
   retriveAllUsersFromDB,
+  getSigleUserFromDB,
 };
