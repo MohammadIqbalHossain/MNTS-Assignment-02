@@ -9,4 +9,6 @@ routes.get('/users', userControllers.retrieveAllUsers);
 
 routes.get('/users/:userId', userControllers.getSingleUser);
 
+routes.put('/users/:userId', userControllers.updateSingleUser);
+
 export const userRoutes = routes;

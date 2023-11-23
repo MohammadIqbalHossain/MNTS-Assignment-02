@@ -21,7 +21,20 @@ const retriveAllUsersFromDB = async () => {
 
 //Retrive a specific user.
 const getSigleUserFromDB = async (userId: string) => {
-  const result = await user.findOne({ userId });
+  if (await user.isUserExists(userId)) {
+    const result = await user.findOne({ userId });
+    return result;
+  }
+
+  throw new Error('user not found.');
+};
+
+//Update a user document.
+const updateUserinDB = async (userId: string, updatedUserData: TUser) => {
+  const result = await user.updateOne({ userId }, updatedUserData, {
+    upsert: true,
+    new: true,
+  });
   return result;
 };
 
@@ -29,4 +42,5 @@ export const userServices = {
   createUserInDB,
   retriveAllUsersFromDB,
   getSigleUserFromDB,
+  updateUserinDB,
 };

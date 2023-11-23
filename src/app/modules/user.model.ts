@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../config';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 
 export const fullNameSchema = new Schema<TUser['fullName']>({
   firstName: {
@@ -28,7 +28,7 @@ export const AddressSchema = new Schema<TUser['address']>({
   },
 });
 
-export const userSchema = new Schema<TUser>({
+export const userSchema = new Schema<TUser, UserModel>({
   userId: {
     type: Number,
     required: [true, 'User ID is required.'],
@@ -86,5 +86,16 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
+userSchema.post('findOne', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+//Define a method to find user.
+userSchema.statics.isUserExists = async function (userId: string) {
+  const existingUser = await user.findOne({ userId });
+  return existingUser;
+};
+
 //Creating a user model.
-export const user = model<TUser>('User', userSchema);
+export const user = model<TUser, UserModel>('User', userSchema);
