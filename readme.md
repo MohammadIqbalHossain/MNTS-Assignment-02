@@ -224,3 +224,5 @@ Response should look like this:
   ]
 }
 ```
+
+Thank you!
