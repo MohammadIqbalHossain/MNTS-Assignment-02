@@ -116,12 +116,12 @@ const updateSingleUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const result = await userServices.deleteUserFromDB(userId);
+    await userServices.deleteUserFromDB(userId);
 
     res.status(200).json({
       sucess: true,
       message: 'User deleted successfully!',
-      data: result,
+      data: null,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {

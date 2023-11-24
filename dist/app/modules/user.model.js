@@ -61,6 +61,7 @@ exports.userSchema = new mongoose_1.Schema({
     },
     userName: {
         type: String,
+        unique: true,
         required: [true, 'User name is required'],
         max: [25, 'User name cannot be longer than 25 charecters'],
     },

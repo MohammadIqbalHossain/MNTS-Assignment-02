@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,7 +39,7 @@ exports.userControllers = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../config"));
 const user_services_1 = require("./user.services");
-const user_zod_validation_1 = __importDefault(require("./user.zod.validation"));
+const user_zod_validation_1 = __importStar(require("./user.zod.validation"));
 //Create a user.
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -87,11 +110,12 @@ const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { userId } = req.params;
         const updatedUserData = req.body;
+        const validatedData = user_zod_validation_1.default.parse(updatedUserData);
         if (updatedUserData.password) {
             const hasePassword = yield bcrypt_1.default.hash(updatedUserData.password, Number(config_1.default.bcrypt_salt_rounds));
             updatedUserData.password = hasePassword;
         }
-        const result = yield user_services_1.userServices.updateUserinDB(userId, updatedUserData);
+        const result = yield user_services_1.userServices.updateUserinDB(userId, validatedData);
         res.status(200).json({
             success: true,
             message: 'User updated successfully!',
@@ -138,7 +162,8 @@ const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
         const newOrder = req.body;
-        yield user_services_1.userServices.addOrderInDB(userId, newOrder);
+        const validatedOrdersData = user_zod_validation_1.orderValdationSchema.parse(newOrder);
+        yield user_services_1.userServices.addOrderInDB(userId, validatedOrdersData);
         res.status(200).json({
             success: true,
             message: 'Order created successfully!',
