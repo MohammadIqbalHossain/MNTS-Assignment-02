@@ -125,3 +125,102 @@ let's assume this is the updated data. I've changed password and email,
   }
 }
 ```
+
+Okay, Now, I've to delete the user from database.
+
+`http://localhost:4000/api/users/20000` To delete a user
+
+You should get this sucess message:
+
+```json
+{
+  "sucess": true,
+  "message": "User deleted successfully!",
+  "data": null
+}
+```
+
+Adding to orders to a user, If users orders array is in document it'll add a product object to it. If it's not in there it'll add the array along with the product.
+
+`http://localhost:4000/api/users/20000/orders` To add order.
+
+Orders API body should include this type of data.
+
+```json
+{
+  "product": "Monitor",
+  "price": 20000,
+  "quantity": 1
+}
+```
+
+Response would look like this:
+
+```json
+{
+  "success": true,
+  "message": "Order created successfully!",
+  "data": null
+}
+```
+
+When you've to get all orders from a single user.
+
+GET: `http://localhost:4000/api/users/20000/orders` to get all orders for a user.
+
+Response should look likte this:
+
+```json
+{
+  "success": true,
+  "message": "Orders fetched successfully!",
+  "data": [
+    {
+      "orders": [
+        {
+          "product": "Laptop",
+          "price": 10000,
+          "quantity": 1,
+          "_id": "65610d1c3426a618d4cdd0ea"
+        },
+        {
+          "product": "IPhone",
+          "price": 10000,
+          "quantity": 1,
+          "_id": "65610d2b3426a618d4cdd0ed"
+        },
+        {
+          "product": "IPad",
+          "price": 10000,
+          "quantity": 1,
+          "_id": "65611e3bb7552faa73bca4ad"
+        },
+        {
+          "product": "Monitor",
+          "price": 20000,
+          "quantity": 1,
+          "_id": "656126cd741203ef7b08ceb5"
+        }
+      ]
+    }
+  ]
+}
+```
+
+When you've to get sum for a user total cost, means all orders total price
+
+GET: `http://localhost:4000/api/users/20000/orders/total-price` To get sum of all orders price.
+
+Response should look like this:
+
+```json
+{
+  "success": true,
+  "message": "Total price calculated successfully!",
+  "data": [
+    {
+      "totalPrice": 50000
+    }
+  ]
+}
+```

@@ -138,11 +138,11 @@ const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        const result = yield user_services_1.userServices.deleteUserFromDB(userId);
+        yield user_services_1.userServices.deleteUserFromDB(userId);
         res.status(200).json({
             sucess: true,
             message: 'User deleted successfully!',
-            data: result,
+            data: null,
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
