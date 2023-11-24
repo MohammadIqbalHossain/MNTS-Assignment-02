@@ -41,8 +41,11 @@ const retrieveAllUsers = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong!',
-      err,
+      message: 'User not found.',
+      error: {
+        code: 404,
+        description: 'User not found.',
+      },
     });
   }
 };
@@ -55,14 +58,14 @@ const getSingleUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Single User fetched successfully!',
+      message: 'User fetched successfully!',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || 'User not found!',
+      message: 'User not found!',
       error: {
         code: 404,
         description: 'User not Found!',

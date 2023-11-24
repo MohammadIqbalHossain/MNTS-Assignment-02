@@ -31,11 +31,15 @@ const getSigleUserFromDB = async (userId: string) => {
 
 //Update a user document.
 const updateUserinDB = async (userId: string, updatedUserData: TUser) => {
-  const result = await user.updateOne({ userId }, updatedUserData, {
-    upsert: true,
-    new: true,
-  });
-  return result;
+  if (await user.isUserExists(userId)) {
+    const result = await user.findOneAndUpdate({ userId }, updatedUserData, {
+      new: true,
+      select: '-_id',
+    });
+    return result;
+  } else {
+    throw new Error('User not found.');
+  }
 };
 
 //Delete a user document.
@@ -43,6 +47,8 @@ const deleteUserFromDB = async (userId: string) => {
   if (await user.isUserExists(userId)) {
     const result = await user.deleteOne({ userId });
     return result;
+  } else {
+    throw new Error('User not found.');
   }
 };
 

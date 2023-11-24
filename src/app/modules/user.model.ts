@@ -85,6 +85,16 @@ export const userSchema = new Schema<TUser, UserModel>({
   },
 });
 
+//Excluding password whenever MongoDB returns a response.
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+
+  return userObject;
+};
+
 //Make userData password hash before saving document.
 userSchema.pre('save', async function (next) {
   const user = this;
@@ -92,17 +102,6 @@ userSchema.pre('save', async function (next) {
     user.password,
     Number(config.bcrypt_salt_rounds),
   );
-  next();
-});
-
-//Changing password to an empthy string after saving.
-userSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
-
-userSchema.post('findOne', function (doc, next) {
-  doc.password = '';
   next();
 });
 
