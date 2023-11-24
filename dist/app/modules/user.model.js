@@ -50,7 +50,7 @@ exports.ordersSchema = new mongoose_1.Schema({
     },
     quantity: {
         type: Number,
-        default: 1,
+        required: true,
     },
 });
 exports.userSchema = new mongoose_1.Schema({
@@ -95,9 +95,15 @@ exports.userSchema = new mongoose_1.Schema({
     },
     orders: {
         type: exports.ordersSchema,
-        required: true,
     },
 });
+//Excluding password whenever MongoDB returns a response.
+exports.userSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+    delete userObject.password;
+    return userObject;
+};
 //Make userData password hash before saving document.
 exports.userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -105,15 +111,6 @@ exports.userSchema.pre('save', function (next) {
         user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt_rounds));
         next();
     });
-});
-//Changing password to an empthy string after saving.
-exports.userSchema.post('save', function (doc, next) {
-    doc.password = '';
-    next();
-});
-exports.userSchema.post('findOne', function (doc, next) {
-    doc.password = '';
-    next();
 });
 //Define a method to find user.
 exports.userSchema.statics.isUserExists = function (userId) {

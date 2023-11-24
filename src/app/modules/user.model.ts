@@ -51,6 +51,7 @@ export const userSchema = new Schema<TUser, UserModel>({
   },
   userName: {
     type: String,
+    unique: true,
     required: [true, 'User name is required'],
     max: [25, 'User name cannot be longer than 25 charecters'],
   },
@@ -85,7 +86,6 @@ export const userSchema = new Schema<TUser, UserModel>({
   },
   orders: {
     type: ordersSchema,
-    required: true,
   },
 });
 

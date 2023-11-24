@@ -14,8 +14,5 @@ routes.put('/users/:userId', user_controller_1.userControllers.updateSingleUser)
 routes.delete('/users/:userId', user_controller_1.userControllers.deleteUser);
 routes.put('/users/:userId/orders', user_controller_1.userControllers.addOrder);
 routes.get('/users/:userId/orders', user_controller_1.userControllers.getAllOrders);
-// routes.get(
-//   '/users/:userId/orders/total-price',
-//   userControllers.calculateOrders,
-// );
+routes.get('/users/:userId/orders/total-price', user_controller_1.userControllers.calculateOrders);
 exports.userRoutes = routes;

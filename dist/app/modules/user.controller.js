@@ -16,21 +16,24 @@ exports.userControllers = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../config"));
 const user_services_1 = require("./user.services");
+const user_zod_validation_1 = __importDefault(require("./user.zod.validation"));
 //Create a user.
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = req.body;
-        const result = yield user_services_1.userServices.createUserInDB(userData);
+        const validatedData = user_zod_validation_1.default.parse(userData);
+        const result = yield user_services_1.userServices.createUserInDB(validatedData);
         res.status(200).json({
             success: true,
             message: 'User created successfully!',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong!',
+            message: err.message || 'Something went wrong!',
             err,
         });
     }
@@ -48,8 +51,11 @@ const retrieveAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, functio
     catch (err) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong!',
-            err,
+            message: 'User not found.',
+            error: {
+                code: 404,
+                description: 'User not found.',
+            },
         });
     }
 });
@@ -60,7 +66,7 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const result = yield user_services_1.userServices.getSigleUserFromDB(userId);
         res.status(200).json({
             success: true,
-            message: 'Single User fetched successfully!',
+            message: 'User fetched successfully!',
             data: result,
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,7 +74,7 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         res.status(500).json({
             success: false,
-            message: err.message || 'User not found!',
+            message: 'User not found!',
             error: {
                 code: 404,
                 description: 'User not Found!',
@@ -119,7 +125,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (err) {
         res.status(500).json({
             success: false,
-            message: err.message || 'User not found!',
+            message: 'User not found!',
             error: {
                 code: 404,
                 description: 'User not Found!',
@@ -132,11 +138,11 @@ const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
         const newOrder = req.body;
-        const result = yield user_services_1.userServices.addOrderInDB(userId, newOrder);
+        yield user_services_1.userServices.addOrderInDB(userId, newOrder);
         res.status(200).json({
             success: true,
             message: 'Order created successfully!',
-            data: result,
+            data: null,
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
@@ -174,29 +180,41 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 });
-// const calculateOrders = async (req: Request, res: Response) => {
-//   try {
-//     const { userId } = req.params;
-//     console.log(userId);
-//     const result = await userServices.calculateTotalOrdersPriceFromDB(userId);
-//     console.log(result);
-//     res.status(200).json({
-//       success: true,
-//       message: 'Total price calculated successfully!',
-//       data: result,
-//     });
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   } catch (err: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: err.message || 'User not found!',
-//       error: {
-//         code: 404,
-//         description: 'User not Found!',
-//       },
-//     });
-//   }
-// };
+//Calculate total price.
+const calculateOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const result = yield user_services_1.userServices.calculateTotalOrdersPriceFromDB(userId);
+        if (result.length === 0 || result === undefined) {
+            res.status(500).json({
+                success: false,
+                message: 'Please order something.',
+                error: {
+                    code: 404,
+                    description: 'Orders not Found!',
+                },
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: 'Total price calculated successfully!',
+                data: result,
+            });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'User not found!',
+            error: {
+                code: 404,
+                description: 'User not Found!',
+            },
+        });
+    }
+});
 exports.userControllers = {
     createUser,
     retrieveAllUsers,
@@ -205,4 +223,5 @@ exports.userControllers = {
     deleteUser,
     addOrder,
     getAllOrders,
+    calculateOrders,
 };

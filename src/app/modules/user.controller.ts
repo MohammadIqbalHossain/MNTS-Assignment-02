@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import config from '../config';
 import { userServices } from './user.services';
-import userValidationSchema from './user.zod.validation';
+import userValidationSchema, {
+  orderValdationSchema,
+} from './user.zod.validation';
 
 //Create a user.
 const createUser = async (req: Request, res: Response) => {
@@ -80,6 +82,8 @@ const updateSingleUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const updatedUserData = req.body;
 
+    const validatedData = userValidationSchema.parse(updatedUserData);
+
     if (updatedUserData.password) {
       const hasePassword = await bcrypt.hash(
         updatedUserData.password,
@@ -88,7 +92,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
       updatedUserData.password = hasePassword;
     }
 
-    const result = await userServices.updateUserinDB(userId, updatedUserData);
+    const result = await userServices.updateUserinDB(userId, validatedData);
 
     res.status(200).json({
       success: true,
@@ -137,7 +141,10 @@ const addOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const newOrder = req.body;
-    await userServices.addOrderInDB(userId, newOrder);
+
+    const validatedOrdersData = orderValdationSchema.parse(newOrder);
+
+    await userServices.addOrderInDB(userId, validatedOrdersData);
 
     res.status(200).json({
       success: true,
