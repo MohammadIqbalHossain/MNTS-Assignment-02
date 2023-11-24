@@ -31,12 +31,15 @@ export const AddressSchema = new Schema<TUser['address']>({
 export const ordersSchema = new Schema<TOrder>({
   product: {
     type: String,
+    required: true,
   },
   price: {
     type: Number,
+    required: true,
   },
   quantity: {
     type: Number,
+    required: true,
   },
 });
 
@@ -82,6 +85,7 @@ export const userSchema = new Schema<TUser, UserModel>({
   },
   orders: {
     type: ordersSchema,
+    required: true,
   },
 });
 

@@ -23,7 +23,7 @@ export type TUser = {
     city: string;
     country: string;
   };
-  orders?: TOrder | null;
+  orders?: TOrder;
 };
 
 export type UserModel = {
