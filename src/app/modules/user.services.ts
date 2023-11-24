@@ -69,34 +69,28 @@ const getAllOrdersFromDB = async (userId: string) => {
 };
 
 // Calculate total price of orders.
-// const calculateTotalOrdersPriceFromDB = async (userId: string) => {
-//   const result = await user.aggregate([
-//     {
-//       $match: { userId: userId },
-//     },
-//     {
-//       $unwind: '$orders',
-//     },
-
-//     {
-//       $group: {
-//         _id: '$userId',
-//         totalPrice: {
-//           $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
-//         },
-//       },
-//     },
-//     {
-//       $project: {
-//         _id: 0,
-//         totalPrice: 1,
-//       },
-//     },
-//   ]);
-
-//   console.log({ result });
-//   return result;
-// };
+const calculateTotalOrdersPriceFromDB = async (userId: string) => {
+  const result = user.aggregate([
+    {
+      $match: { _id: userId },
+    },
+    {
+      $unwind: '$orders',
+    },
+    {
+      $group: {
+        _id: '$_id',
+        totalPrice: {
+          $sum: { $multiply: ['$orders.price', '$orders.quantity'] },
+        },
+      },
+    },
+    {
+      $project: { totalPrice: 1 },
+    },
+  ]);
+  return result;
+};
 
 export const userServices = {
   createUserInDB,
@@ -106,4 +100,5 @@ export const userServices = {
   deleteUserFromDB,
   addOrderInDB,
   getAllOrdersFromDB,
+  calculateTotalOrdersPriceFromDB,
 };

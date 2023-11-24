@@ -13,7 +13,7 @@ app.use(cors());
 app.use('/api', userRoutes);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+  res.send('Welcome to Express + TypeScript + Mongoose  Server');
 });
 
 export default app;

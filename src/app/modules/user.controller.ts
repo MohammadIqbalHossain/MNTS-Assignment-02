@@ -174,30 +174,28 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-// const calculateOrders = async (req: Request, res: Response) => {
-//   try {
-//     const { userId } = req.params;
-//     console.log(userId);
-//     const result = await userServices.calculateTotalOrdersPriceFromDB(userId);
-//     console.log(result);
+const calculateOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userServices.calculateTotalOrdersPriceFromDB(userId);
 
-//     res.status(200).json({
-//       success: true,
-//       message: 'Total price calculated successfully!',
-//       data: result,
-//     });
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   } catch (err: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: err.message || 'User not found!',
-//       error: {
-//         code: 404,
-//         description: 'User not Found!',
-//       },
-//     });
-//   }
-// };
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'User not found!',
+      error: {
+        code: 404,
+        description: 'User not Found!',
+      },
+    });
+  }
+};
 
 export const userControllers = {
   createUser,
@@ -207,4 +205,5 @@ export const userControllers = {
   deleteUser,
   addOrder,
   getAllOrders,
+  calculateOrders,
 };
