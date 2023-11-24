@@ -2,22 +2,27 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import config from '../config';
 import { userServices } from './user.services';
+import userValidationSchema from './user.zod.validation';
 
 //Create a user.
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    const result = await userServices.createUserInDB(userData);
+
+    const validatedData = userValidationSchema.parse(userData);
+
+    const result = await userServices.createUserInDB(validatedData);
 
     res.status(200).json({
       success: true,
       message: 'User created successfully!',
       data: result,
     });
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong!',
+      message: err.message || 'Something went wrong!',
       err,
     });
   }
@@ -174,6 +179,7 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
+//Calculate total price.
 const calculateOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
