@@ -65,7 +65,7 @@ You data should stricly follow this model except orders array of objects, it's o
 
 okay, Now get added user from the database.
 
-`http://localhost:4000/api/users/:20000` You'll get all data this the specifed `userId` `20000`,
+`http://localhost:4000/api/users/20000` You'll get all data this the specifed `userId` `20000`,
 
 You should get this document:
 
@@ -93,6 +93,35 @@ You should get this document:
       "_id": "65610b073426a618d4cdd0dd"
     },
     "__v": 0
+  }
+}
+```
+
+I've made a mistake while adding the document, Now, I've to update the document.
+
+To update you have to give the updated data in the body of API.
+
+let's assume this is the updated data. I've changed password and email,
+
+`http://localhost:4000/api/users/20000` to udate.
+
+```json
+{
+  "userId": 20000,
+  "userName": "Mark Rafello",
+  "password": "rafellomark123",
+  "fullName": {
+    "firstName": "Mark",
+    "lastName": "Rafello"
+  },
+  "age": 25,
+  "email": "rafellomark@xample.com",
+  "isActive": true,
+  "hobbies": ["Writing", "Coding", "Gosiping", "Cricket"],
+  "address": {
+    "street": "Elephatn st 203",
+    "city": "Texas",
+    "country": "USA"
   }
 }
 ```
