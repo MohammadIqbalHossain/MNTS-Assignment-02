@@ -39,7 +39,7 @@ POST: `http://localhost:4000/api/users` for creating an user.
 You data should stricly follow this model except orders array of objects, it's optional.
 
 ```json
-//Therse are fake data.
+//These are fake data.
 {
   "userId": 20000,
   "userName": "Mark Rafello",
