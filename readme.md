@@ -1,6 +1,6 @@
 # How to run the project locally.
 
-open a teminal, run this command
+Open a teminal, run this command
 
 ```commad
 cd youDirectory
@@ -18,7 +18,7 @@ Install all depdencies for the project.
 npm i
 ```
 
-You'll find a script in `package.json` file that runs the project while development phase before compiling the files in JavaScript. Using ts-node-dev package to run the project in development phase.
+You'll find a script in `package.json` file that runs the project while in development phase before compiling the files in JavaScript. It's Using ts-node-dev package to run the project in development phase.
 
 ```js
 npm run star:dev
@@ -32,13 +32,14 @@ npm run build
 
 Here I've create some API for CRUD operations.
 
-when you're runing your code locally you can acces these APIs
+when you're runing your code locally you can acces these APIs via
 
-`http://localhost:4000/api/users` for creating an user.
+POST: `http://localhost:4000/api/users` for creating an user.
 
 You data should stricly follow this model except orders array of objects, it's optional.
 
 ```json
+//Therse are fake data.
 {
   "userId": 20000,
   "userName": "Mark Rafello",
@@ -59,36 +60,35 @@ You data should stricly follow this model except orders array of objects, it's o
 }
 ```
 
-`http://localhost:4000/api/users` to retreive all user data. a user document only contains `username, fullName, age, email, address`
+GET: `http://localhost:4000/api/users` to retreive all user data. a user document only contains `username, fullName, age, email, address`
 
-okay, Now get added user from the database.
+okay, Now retreive a specific user document by `userId` .
 
-`http://localhost:4000/api/users/20000` You'll get all data this the specifed `userId` `20000`,
+`http://localhost:4000/api/users/20000` You'll get all data for this specifed `userId`: `20000`,
 
 You should get this document:
 
 ```json
 {
   "success": true,
-  "message": "User fetched successfully!",
+  "message": "User updated successfully!",
   "data": {
-    "_id": "6561090b3426a618d4cdd0d0",
     "userId": 20000,
     "userName": "Mark Rafello",
     "fullName": {
       "firstName": "Mark",
       "lastName": "Rafello",
-      "_id": "65610b073426a618d4cdd0dc"
+      "_id": "65621718c3cb9a5486756ea3"
     },
-    "age": 25,
-    "email": "rafello@xample.com",
-    "isActive": true,
-    "hobbies": ["Writing", "Coding", "Gosiping", "Cricket"],
+    "age": 23,
+    "email": "thehulkrafello@xample.com",
+    "isActive": false,
+    "hobbies": ["Writing", "Coding", "Acting", "Cooking"],
     "address": {
-      "street": "Elephatn st 203",
-      "city": "Texas",
+      "street": "Elpehant street Boston",
+      "city": "NYC",
       "country": "USA",
-      "_id": "65610b073426a618d4cdd0dd"
+      "_id": "65621718c3cb9a5486756ea4"
     },
     "__v": 0
   }
@@ -101,7 +101,7 @@ To update you have to give the updated data in the body of API.
 
 let's assume this is the updated data. I've changed password and email,
 
-`http://localhost:4000/api/users/20000` to udate.
+PUT: `http://localhost:4000/api/users/20000` to udate.
 
 ```json
 {
@@ -124,9 +124,9 @@ let's assume this is the updated data. I've changed password and email,
 }
 ```
 
-Okay, Now, I've to delete the user from database.
+You can also delete the user from database.
 
-`http://localhost:4000/api/users/20000` To delete a user
+DELETE: `http://localhost:4000/api/users/20000` To delete a user
 
 You should get this sucess message:
 
@@ -138,9 +138,9 @@ You should get this sucess message:
 }
 ```
 
-Adding to orders to a user, If users orders array is in document it'll add a product object to it. If it's not in there it'll add the array along with the product.
+Adding orders to a user, If users orders array is in document it'll add a product`object`to it. If it's not in there it'll add the array along with the product.
 
-`http://localhost:4000/api/users/20000/orders` To add order.
+PUT: `http://localhost:4000/api/users/20000/orders` To add order.
 
 Orders API body should include this type of data.
 
