@@ -111,9 +111,9 @@ const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { userId } = req.params;
         const updatedUserData = req.body;
         const validatedData = user_zod_validation_1.default.parse(updatedUserData);
-        if (updatedUserData.password) {
-            const hasePassword = yield bcrypt_1.default.hash(updatedUserData.password, Number(config_1.default.bcrypt_salt_rounds));
-            updatedUserData.password = hasePassword;
+        if (validatedData.password) {
+            const hasePassword = yield bcrypt_1.default.hash(validatedData.password, Number(config_1.default.bcrypt_salt_rounds));
+            validatedData.password = hasePassword;
         }
         const result = yield user_services_1.userServices.updateUserinDB(userId, validatedData);
         res.status(200).json({

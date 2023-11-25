@@ -1,7 +1,5 @@
 # How to run the project locally.
 
-Step-01:
-
 open a teminal, run this command
 
 ```commad

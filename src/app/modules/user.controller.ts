@@ -84,12 +84,12 @@ const updateSingleUser = async (req: Request, res: Response) => {
 
     const validatedData = userValidationSchema.parse(updatedUserData);
 
-    if (updatedUserData.password) {
+    if (validatedData.password) {
       const hasePassword = await bcrypt.hash(
-        updatedUserData.password,
+        validatedData.password,
         Number(config.bcrypt_salt_rounds),
       );
-      updatedUserData.password = hasePassword;
+      validatedData.password = hasePassword;
     }
 
     const result = await userServices.updateUserinDB(userId, validatedData);
