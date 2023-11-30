@@ -10,7 +10,7 @@ const createUserInDB = async (userData: TUser) => {
 //Find all documents and field filter.
 const retriveAllUsersFromDB = async () => {
   const result = await user.aggregate([]).project({
-    userName: 1,
+    username: 1,
     fullName: 1,
     age: 1,
     email: 1,

@@ -34,7 +34,7 @@ export const userValidationSchema = z.object({
     .int()
     .positive()
     .refine((data) => !!data, { message: 'User ID is required' }),
-  userName: z
+  username: z
     .string()
     .trim()
     .min(1)

@@ -49,7 +49,7 @@ export const userSchema = new Schema<TUser, UserModel>({
     required: [true, 'User ID is required.'],
     unique: true,
   },
-  userName: {
+  username: {
     type: String,
     unique: true,
     required: [true, 'User name is required'],

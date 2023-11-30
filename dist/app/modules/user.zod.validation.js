@@ -33,7 +33,7 @@ exports.userValidationSchema = zod_1.z.object({
         .int()
         .positive()
         .refine((data) => !!data, { message: 'User ID is required' }),
-    userName: zod_1.z
+    username: zod_1.z
         .string()
         .trim()
         .min(1)

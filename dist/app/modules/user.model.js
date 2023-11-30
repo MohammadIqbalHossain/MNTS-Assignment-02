@@ -59,7 +59,7 @@ exports.userSchema = new mongoose_1.Schema({
         required: [true, 'User ID is required.'],
         unique: true,
     },
-    userName: {
+    username: {
         type: String,
         unique: true,
         required: [true, 'User name is required'],

@@ -19,7 +19,7 @@ const createUserInDB = (userData) => __awaiter(void 0, void 0, void 0, function*
 //Find all documents and field filter.
 const retriveAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.user.aggregate([]).project({
-        userName: 1,
+        username: 1,
         fullName: 1,
         age: 1,
         email: 1,
